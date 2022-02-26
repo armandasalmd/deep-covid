@@ -1,1 +1,4 @@
-assets
+__test__
+/datasets/**/*
+!/datasets/DATASETS.md
+!/datasets/split.ipynb
