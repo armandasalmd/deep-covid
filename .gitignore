@@ -1,4 +1,6 @@
+__pycache__
 __test__
+logs
 /datasets/**/*
 !/datasets/DATASETS.md
 !/datasets/split.ipynb
