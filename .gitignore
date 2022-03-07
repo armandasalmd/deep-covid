@@ -1,5 +1,6 @@
 __pycache__
 __test__
+models
 logs
 /datasets/**/*
 !/datasets/DATASETS.md

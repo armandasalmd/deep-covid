@@ -5,8 +5,8 @@ class CollectionType(Enum):
   TRAIN = "train"
 
 class ClassificationType(Enum):
-  TWO_CLASS = "twoClassClassification"
-  THREE_CLASS = "threeClassClassification"
+  TWO_CLASS = "2C"
+  THREE_CLASS = "3C"
 
 class ModelType(Enum):
   DEEP_COVID = "deepCovid"
