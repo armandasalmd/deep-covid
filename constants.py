@@ -5,9 +5,9 @@ DATASET_RADIOGRAPHY_ROOT = "./datasets/dataset3"
 
 TRAIN_IMAGE_GEN_OPTIONS = dict(
   rescale=1./255,
-  rotation_range=20,
-  width_shift_range=0.2,
-  height_shift_range=0.2,
+  rotation_range=10,
+  width_shift_range=0.15,
+  height_shift_range=0.15,
   horizontal_flip=True
 )
 

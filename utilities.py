@@ -2,7 +2,9 @@ import datetime
 import os
 import pandas as pd
 import tensorflow as tf
+import numpy as np
 from keras.models import load_model
+from keras.utils.vis_utils import plot_model
 
 import constants as CONSTANTS
 from enums import ClassificationType, LabelType
@@ -67,7 +69,7 @@ def load_my_model(model_type, classification_type = CONSTANTS.CLASSIFICATION_MOD
 
   return load_model(path)
 
-def save_my_model(model, model_type):
+def save_my_model(model, model_type, plot_architecture):
   # /models/<modelType>-<classificationType>/<MM:DD-HH:mm>
   if model is None:
     return
@@ -76,5 +78,21 @@ def save_my_model(model, model_type):
     model_type.value + "-" +\
     CONSTANTS.CLASSIFICATION_MODE.value + "/" +\
     datetime.datetime.now().strftime("%m%d-%H%M")
+  
+  if plot_architecture:
+    f_location = save_dir + "/model_architecture.png"
+    plot_model(model, show_shapes=True, to_file=f_location)
+    print("Image saved to:", f_location)
 
   model.save(save_dir)
+
+def categorical_covid_sensitivity(confusion_matrix):
+  true_covid_row = confusion_matrix[0]
+  return true_covid_row[0] / np.sum(true_covid_row)
+
+def categorical_covid_specificity(confusion_matrix):
+  true_normal_row = confusion_matrix[1]
+  true_pneu_row = confusion_matrix[2]
+  fp = true_normal_row[0] + true_pneu_row[0] # false positives count
+  non_covid_sum = np.sum(true_normal_row) + np.sum(true_pneu_row)
+  return (non_covid_sum - fp) / non_covid_sum

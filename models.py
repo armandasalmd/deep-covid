@@ -1,64 +1,102 @@
 from keras.layers import BatchNormalization, Dense, Flatten, Conv2D, GlobalAveragePooling2D, MaxPooling2D, Dropout
 from keras.models import Sequential
 from keras.applications.mobilenet_v2 import MobileNetV2
+from keras.applications.efficientnet import EfficientNetB7
+from keras import backend as K
 import tensorflow as tf
 
-from enums import ModelType
+import constants as CONSTANTS
+from enums import ClassificationType, ModelType
+
+def sensitivity(y_true, y_pred):
+  true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+  possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
+  return true_positives / (possible_positives + K.epsilon())
+
+def specificity(y_true, y_pred):
+  true_negatives = K.sum(K.round(K.clip((1-y_true) * (1-y_pred), 0, 1)))
+  possible_negatives = K.sum(K.round(K.clip(1-y_true, 0, 1)))
+  return true_negatives / (possible_negatives + K.epsilon())
+
+def _get_compile_options():
+  IS_2C = CONSTANTS.CLASSIFICATION_MODE == ClassificationType.TWO_CLASS
+  options = {
+    "optimizer": tf.keras.optimizers.Adam(learning_rate = 0.001),
+    "loss": "binary_crossentropy" if IS_2C else "sparse_categorical_crossentropy",
+    "metrics": [sensitivity, specificity, "accuracy"] if IS_2C else ["accuracy"]
+  }
+  return options
+
+def _get_output_layer():
+  if CONSTANTS.CLASSIFICATION_MODE == ClassificationType.TWO_CLASS:
+    return Dense(1, activation="sigmoid")
+  else:
+    return Dense(3, activation="softmax")
+
+# ============================================
 
 def get(modelType):
   if modelType == ModelType.DEEP_COVID:
     return _getDeepCovidModel()
-  if modelType == ModelType.MOBILE_NET_V2:
+  elif modelType == ModelType.MOBILE_NET_V2:
     return _getMobileNetV2()
+  elif modelType == ModelType.EFFICIENT_NET:
+    return _getEfficientNetB7()
   else:
     return None
 
 def _getDeepCovidModel():
   model = Sequential([
     BatchNormalization(),
-    Conv2D(64, 3, activation="relu"),
+    Conv2D(64, 3, activation="relu", padding="same"),
     MaxPooling2D(),
-    Dropout(0.3),
-    Conv2D(128, 3, activation="relu"),
-    MaxPooling2D(),
-    Conv2D(128, 3, activation="relu"),
-    MaxPooling2D(),
-    Dropout(0.3),
+    Dropout(0.25),
     Conv2D(256, 3, activation="relu"),
+    MaxPooling2D(),
+    Conv2D(256, 3, 2, activation="relu"),
+    MaxPooling2D(),
+    Conv2D(128, 3, 2, activation="relu"),
     MaxPooling2D(),
     Dropout(0.2),
     Flatten(),
-    Dense(256, activation="relu"),
-    Dropout(0.15),
-    Dense(3, activation="softmax")
+    Dense(128, activation="relu"),
+    Dense(48, activation="relu"),
+    Dropout(0.1),
+    _get_output_layer()
   ])
 
-  # move selected metrics to constants
-  opt = tf.keras.optimizers.Adam(learning_rate = 1e-3)
-  model.compile(
-    optimizer=opt,
-    loss="sparse_categorical_crossentropy",
-    metrics=["accuracy"]
-  )
+
+  model.compile(**_get_compile_options())
   return model
 
-
 def _getMobileNetV2():
-  base_model = MobileNetV2(input_shape = (256, 256, 3), include_top = False, weights = "imagenet")
+  base_model = MobileNetV2(input_shape = tuple([*CONSTANTS.INPUT_SIZE, 3]), include_top = False, weights = "imagenet")
   base_model.trainable = False
 
   model = Sequential([
     base_model,
     GlobalAveragePooling2D(),
-    Dropout(0.15),
-    Dense(3, activation="softmax")                                     
+    Flatten(),
+    Dense(128, activation="relu"),
+    Dropout(0.2),
+    _get_output_layer()                                  
   ])
-  opt = tf.keras.optimizers.Adam(learning_rate = 1e-3)
-  model.compile(
-    optimizer=opt,
-    loss="sparse_categorical_crossentropy",
-    metrics=["accuracy"]
-  )
 
+  model.compile(**_get_compile_options())
   return model
 
+def _getEfficientNetB7():
+  base_model = EfficientNetB7(input_shape = tuple([*CONSTANTS.INPUT_SIZE, 3]), include_top = False, weights = "imagenet")
+  base_model.trainable = False
+
+  model = Sequential([
+    base_model,
+    GlobalAveragePooling2D(),
+    Flatten(),
+    Dense(128, activation="relu"),
+    Dropout(0.2),
+    _get_output_layer()                                
+  ])
+
+  model.compile(**_get_compile_options())
+  return model

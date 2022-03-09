@@ -10,17 +10,26 @@
   - Notebook cell with constants for "run options". Goal is to toogle options and "Run All" notebook cells to perform a task
   - experiment using lower precision variables (flaot16) to reduce memory usage. Save screenshots of evidence. How does it effect traning speed (compare before and after)
     - Investigation shows that no improvement nor loss is obtained
+- 8/3/2022
+  - Fix unable to plot confussion matrix for 2C labels
+- 9/3/2022
+  - Add model for transfer learning - `Efficient Net`
+  - Add model for transfer learning - `Mobile Net V2`
+  - Implement early stopping callback
+    `es = tf.keras.callbacks.EarlyStopping(monitor = 'val_loss', mode = 'min', verbose = 1, patience = 4)`
+  - When plotting random 9 images, show 3 for each class instead and add label
+  - In notebook plot trained model accuracy after training
+  - add more metrics to model when training
 
 ### In progress:
 
 ### Features to deliver:
-- explore Tensorboard and check if we can log "Confussion matrixes"
-  - [Model does not learn example](https://www.guru99.com/tensorboard-tutorial.html)
-- add more metrics to model when training
-- Add model for transfer learning - `Alex Net`
-- Add model for transfer learning - `Efficient Net`
-- Add model for transfer learning - `Mobile Net V2`
 - Keras Tuner to tune my models
+- [Model does not learn example](https://www.guru99.com/tensorboard-tutorial.html)
+- Add model for transfer learning - `Alex Net`
+  - Special installation required [here](https://github.com/heuritech/convnets-keras#get-the-weights-of-the-pre-trained-networks)
+- [5. Ben Graham's Method](https://www.kaggle.com/sana306/detection-of-covid-positive-cases-using-dl) 
+- [EDA mean vs std for positive/negative scatterplot](https://www.kaggle.com/sana306/detection-of-covid-positive-cases-using-dl)
 - cleaning outlier images in dataset? Is that possible? Experiment. How does it improve accuracy?
 - Generate logs for
   - Deep Covid
@@ -46,3 +55,8 @@
     - 2C fine tuned model
     - 3C initial model
     - 3C fine tuned model
+
+
+
+> Note that the best way to monitor your metrics during training is via TensorBoard.
+[Keras DOCS](https://keras.io/api/metrics/)
