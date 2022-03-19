@@ -5,3 +5,6 @@ logs
 /datasets/**/*
 !/datasets/DATASETS.md
 !/datasets/split.ipynb
+
+convnetskeras
+alexnet_weights.h5

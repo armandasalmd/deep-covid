@@ -79,12 +79,12 @@ def save_my_model(model, model_type, plot_architecture):
     CONSTANTS.CLASSIFICATION_MODE.value + "/" +\
     datetime.datetime.now().strftime("%m%d-%H%M")
   
+  model.save(save_dir)
+
   if plot_architecture:
     f_location = save_dir + "/model_architecture.png"
     plot_model(model, show_shapes=True, to_file=f_location)
     print("Image saved to:", f_location)
-
-  model.save(save_dir)
 
 def categorical_covid_sensitivity(confusion_matrix):
   true_covid_row = confusion_matrix[0]

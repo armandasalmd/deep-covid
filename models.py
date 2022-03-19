@@ -42,6 +42,8 @@ def get(modelType):
     return _getMobileNetV2()
   elif modelType == ModelType.EFFICIENT_NET:
     return _getEfficientNetB7()
+  elif modelType == ModelType.ALEX_NET:
+    return _getAlexNet()
   else:
     return None
 
@@ -79,7 +81,7 @@ def _getMobileNetV2():
     Flatten(),
     Dense(128, activation="relu"),
     Dropout(0.2),
-    _get_output_layer()                                  
+    _get_output_layer()
   ])
 
   model.compile(**_get_compile_options())
@@ -95,8 +97,39 @@ def _getEfficientNetB7():
     Flatten(),
     Dense(128, activation="relu"),
     Dropout(0.2),
-    _get_output_layer()                                
+    _get_output_layer()
   ])
 
   model.compile(**_get_compile_options())
+  return model
+
+def _getAlexNet():
+  # https://www.mydatahack.com/building-alexnet-with-keras/
+  # https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf
+  # https://github.com/heuritech/convnets-keras/blob/master/convnetskeras/convnets.py
+  # https://github.com/dandxy89/ImageModels
+  model=Sequential([
+    Conv2D(filters=128, kernel_size=(11,11), strides=(4,4), activation="relu", input_shape=tuple([*CONSTANTS.INPUT_SIZE, 3])),
+    BatchNormalization(),
+    MaxPooling2D(pool_size=(2,2)),
+    Conv2D(filters=256, kernel_size=(5,5), strides=(1,1), activation="relu", padding="same"),
+    BatchNormalization(),
+    MaxPooling2D(pool_size=(3,3)),
+    Conv2D(filters=256, kernel_size=(3,3), strides=(1,1), activation="relu", padding="same"),
+    BatchNormalization(),
+    Conv2D(filters=256, kernel_size=(1,1), strides=(1,1), activation="relu", padding="same"),
+    BatchNormalization(),
+    Conv2D(filters=256, kernel_size=(1,1), strides=(1,1), activation="relu", padding="same"),
+    BatchNormalization(),
+    MaxPooling2D(pool_size=(2,2)),
+    Flatten(),
+    Dense(1024,activation="relu"),
+    Dropout(0.5),
+    Dense(1024,activation="relu"),
+    Dropout(0.5),
+    _get_output_layer()
+  ])
+
+  model.compile(**_get_compile_options())
+  model.summary()
   return model
