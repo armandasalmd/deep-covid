@@ -20,8 +20,20 @@
   - When plotting random 9 images, show 3 for each class instead and add label
   - In notebook plot trained model accuracy after training
   - add more metrics to model when training
-
-### In progress:
+- 21/3/2022
+  - Generate logs for
+    - Deep Covid
+      - ✅ 2C initial model
+      - ✅ 3C initial model
+    - Mobile Net V2
+      - ✅ 2C initial model
+      - ✅3C initial model
+    - DenseNet201 Net
+      - ✅ 2C initial model
+      - ✅ 3C initial model
+    - Efficient Net
+      - ✅ 2C initial model
+      - ✅ 3C initial model
 
 ### Features to deliver:
 - Keras Tuner to tune my models
@@ -31,32 +43,7 @@
 - [5. Ben Graham's Method](https://www.kaggle.com/sana306/detection-of-covid-positive-cases-using-dl) 
 - [EDA mean vs std for positive/negative scatterplot](https://www.kaggle.com/sana306/detection-of-covid-positive-cases-using-dl)
 - cleaning outlier images in dataset? Is that possible? Experiment. How does it improve accuracy?
-- Generate logs for
-  - Deep Covid
-    - 2C initial model
-    - 2C fine tuned model
-    - 3C initial model
-    - 3C fine tuned model
-    - [Layer 1 - BatchNormali](https://machinelearningmastery.com/how-to-accelerate-learning-of-deep-neural-networks-with-batch-normalization/)
-    - [Batch normalization example](https://machinelearningmastery.com/how-to-accelerate-learning-of-deep-neural-networks-with-batch-normalization/)
-    - [ARVIX paper for batch normalisation](https://arxiv.org/abs/1502.03167)
-  - Alex Net
-    - 2C initial model
-    - 2C fine tuned model
-    - 3C initial model
-    - 3C fine tuned model
-  - Efficient Net
-    - 2C initial model
-    - 2C fine tuned model
-    - 3C initial model
-    - 3C fine tuned model
-  - Mobile Net V2
-    - 2C initial model
-    - 2C fine tuned model
-    - 3C initial model
-    - 3C fine tuned model
 
-
-
-> Note that the best way to monitor your metrics during training is via TensorBoard.
-[Keras DOCS](https://keras.io/api/metrics/)
+- [Layer 1 - BatchNormali](https://machinelearningmastery.com/how-to-accelerate-learning-of-deep-neural-networks-with-batch-normalization/)
+- [Batch normalization example](https://machinelearningmastery.com/how-to-accelerate-learning-of-deep-neural-networks-with-batch-normalization/)
+- [ARVIX paper for batch normalisation](https://arxiv.org/abs/1502.03167)

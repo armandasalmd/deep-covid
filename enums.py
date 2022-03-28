@@ -10,9 +10,11 @@ class ClassificationType(Enum):
 
 class ModelType(Enum):
   DEEP_COVID = "deepCovid"
-  ALEX_NET = "alexNet"
+  DENSE_NET_201 = "denseNet201"
   EFFICIENT_NET = "efficientNet"
+  EFFICIENT_NET_REFINED = "efficientNetRefined"
   MOBILE_NET_V2 = "mobileNetV2"
+  MOBILE_NET_V2_REFINED = "mobileNetV2Refined"
 
 class DatasetType(Enum):
   COMBINED = "combined"
