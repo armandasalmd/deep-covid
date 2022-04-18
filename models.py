@@ -3,7 +3,6 @@ from keras.models import Sequential
 from keras.applications.mobilenet_v2 import MobileNetV2
 from keras.applications.efficientnet import EfficientNetB7
 from keras.applications.densenet import DenseNet201
-from keras.metrics import AUC
 from keras import backend as K
 import tensorflow as tf
 
@@ -36,7 +35,10 @@ def _get_compile_options():
   options = {
     "optimizer": tf.keras.optimizers.Adam(learning_rate = 0.001),
     "loss": "binary_crossentropy" if IS_2C else "sparse_categorical_crossentropy",
-    "metrics": [sensitivity, specificity, precision, "accuracy"] if IS_2C else ["accuracy"]
+    "metrics": 
+      [sensitivity, specificity, precision, "accuracy"] 
+      if IS_2C 
+      else ["accuracy"]
   }
   return options
 
@@ -81,9 +83,8 @@ def _getDeepCovidModel():
     Dense(128, activation="relu"),
     Dense(48, activation="relu"),
     Dropout(0.1),
-    _get_output_layer()
+    _get_output_layer() # Sigmoid or Softmax
   ])
-
 
   model.compile(**_get_compile_options())
   return model
