@@ -2,11 +2,14 @@
 
 > Deep Covid is a custom given name and refers to Convolutional Neural Network model. Some other transfer learning models have been used for classification task: Normal, Pneumonia, Covid-19
 
+In this project, medical chest X-Ray are fed to Deep Learning models and predicts the image label. The best result show that **96.9%** can be achieved for `2-class accuracy`. And **97.5%** for `3-class accuracy` (EfficientNetB7Refined model).
+
 #### Models used for task evaluation
-1. DeepCovid
-1. MobileNetV2
-1. DenseNet201
-1. EfficientNetB7
+1. DeepCovid (95.4% 3-class accuracy)
+1. MobileNetV2 (92.7% 3-class accuracy)
+1. DenseNet201 (93.4% 3-class accuracy)
+1. EfficientNetB7 (96.1% 3-class accuracy)
+1. EfficientNetB7Refined (96.9% 3-class accuracy)
 
 ## Running the project (guide)
 
