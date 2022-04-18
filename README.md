@@ -65,6 +65,6 @@ SAVE_TRAINED_MODEL = True
 SELECTED_MODEL = ModelType.EFFICIENT_NET_REFINED 
 ```
 
-Additionally, in `constants.py` you can change 2-class/3-class accuracy option.
+> ❗ Additionally, in `constants.py` you can change 2-class/3-class accuracy option. **2-class accuracy** refers to joining Pneumonia and Covid labels to a single class and classifying both of them as COVID-19 positive. ❗
 
 After all options are configured, press **Run all cells** 
